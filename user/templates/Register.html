@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Login - HelpGoodsWeb</title>
+		<title>Register - HelpGoodsWeb</title>
 	</head>
 	<body>
-		<form action="{% url 'user:login' %}" method="post">
+		<form action="{% url 'user:register' %}" method="post">
 			{% csrf_token %}
 			{{ form }}
 			{% if message %}
 			{{ message }}
 			{% endif %}
-			<input type="submit" value="Login">
+			<input type="submit" value="Register">
 		</form>
 	</body>
 </html>
