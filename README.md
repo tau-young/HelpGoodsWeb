@@ -1,4 +1,4 @@
-# HelpGoodsGUI
+# HelpGoodsWeb
 
 本项目是上海交通大学 CS-3331 软件工程课程大作业，同时也是 [Help-Goods](https://github.com/tau-young/Help-Goods) 项目的 GUI 版本，但是经过了完全的重构。
 
