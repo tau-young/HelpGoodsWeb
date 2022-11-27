@@ -4,6 +4,7 @@
 		<title>Register - HelpGoodsWeb</title>
 	</head>
 	<body>
+		<h1>Register</h1>
 		<form action="{% url 'user:register' %}" method="post">
 			{% csrf_token %}
 			{{ form }}

@@ -4,6 +4,7 @@
 		<title>Login - HelpGoodsWeb</title>
 	</head>
 	<body>
+		<h1>Login</h1>
 		<form action="{% url 'user:login' %}" method="post">
 			{% csrf_token %}
 			{{ form }}
