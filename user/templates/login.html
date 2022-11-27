@@ -7,11 +7,12 @@
 		<h1>Login</h1>
 		<form action="{% url 'user:login' %}" method="post">
 			{% csrf_token %}
-			{{ form }}
+			<p><input type="text", name="username", placeholder="Username"></p>
+			<p><input type="password", name="password", placeholder="Password"></p>
 			{% if message %}
-			{{ message }}
+			<p>{{ message }}</p>
 			{% endif %}
-			<input type="submit" value="Login">
+			<p><input type="submit" value="Login"></p>
 		</form>
 	</body>
 </html>
