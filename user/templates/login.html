@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login - HelpGoodsWeb</title>
+	</head>
+	<body>
+		<form action="{% url 'user:index' %}" method="post">
+			{% csrf_token %}
+			{{ form }}
+			<input type="submit" value="Login">
+		</form>
+	</body>
+</html>
