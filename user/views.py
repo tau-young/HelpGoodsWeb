@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import *
+from .models import *
 
 # Create your views here.
 def index(request):
@@ -10,6 +11,7 @@ def index(request):
 	return render(request, 'UserInfo.html',
 	{
 		'user': request.session['user']
+		# 'user': User.objects.all()
 	})
 
 def login(request):
@@ -53,4 +55,11 @@ def register(request):
 	return render(request, 'Login.html',
 	{
 		'form': RegisterForm()
+	})
+
+def userInfo(request, username):
+	user = username
+	return render(request, 'UserInfo.html',
+	{
+		'user': user
 	})

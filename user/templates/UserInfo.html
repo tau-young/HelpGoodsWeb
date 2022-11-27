@@ -4,7 +4,13 @@
 		<title>User Info - HelpGoodsWeb</title>
 	</head>
 	<body>
+		{% if user %}
 		<h1>User Info</h1>
 		Username: {{ user }}
+		{% else %}
+		Not logged in!
+		<a href="{% url 'user:login' %}">Login</a>
+		<a href="{% url 'user:register' %}">Register</a>
+		{% endif %}
 	</body>
 </html>
