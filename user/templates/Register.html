@@ -7,15 +7,16 @@
 		<h1>Register</h1>
 		<form action="{% url 'user:login' %}" method="post">
 			{% csrf_token %}
-			<p><input type="text", name="username", placeholder="Username"></p>
-			<p><input type="password", name="password", placeholder="Password"></p>
-			<p><input type="password", name="password2", placeholder="Confirm Password"></p>
-			<p><input type="text", name="address", placeholder="Address"></p>
-			<p><input type="text", name="contactInfo", placeholder="Contact Info"></p>
+			<div><input type="text", name="username", placeholder="Username"></div>
+			<div><input type="password", name="password", placeholder="Password"></div>
+			<div><input type="password", name="password2", placeholder="Confirm Password"></div>
+			<div><input type="text", name="address", placeholder="Address"></div>
+			<div><input type="text", name="contactInfo", placeholder="Contact Info"></div>
 			{% if message %}
-			<p>{{ message }}</p>
+			<div>{{ message }}</div>
 			{% endif %}
-			<p><input type="submit" value="Login"></p>
+			<div><input type="submit" value="Register"></div>
 		</form>
+		<a href="{% url 'user:login' %}">Already have an account? Login >></a>
 	</body>
 </html>
