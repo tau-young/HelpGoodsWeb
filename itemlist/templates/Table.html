@@ -19,7 +19,9 @@
 	</head>
 	<body>
 		<h1>Item List</h1>
-		<a href="{% url 'itemlist:new' %}">Add new item</a>
+		<div>
+			Current User: <a href="{% url 'user:detail' %}?username={{ user.username }}">{{ user.username }}</a>
+		</div>
 		<table>
 			<thead>
 				<th>Item Name</th>
@@ -35,19 +37,20 @@
 				<tr>
 					<td><a href="{% url 'itemlist:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
 					<td>{{ item.description }}</td>
-					<td>{{ item.publisher }}</td>
+					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>
 					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
 					<td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
 					<td>
 						{% if user.username == item.publisher %}
-						<button>Edit</button>
-						<button>Delete</button>
+						<a href="{% url 'itemlist:edit' %}?id={{ item.id }}">Edit</a>
+						<a href="{% url 'itemlist:delete' %}?id={{ item.id }}">Delete</a>
 						{% endif %}
 					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
+		<a href="{% url 'itemlist:new' %}">Add new item</a>
 	</body>
 </html>

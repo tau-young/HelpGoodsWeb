@@ -9,7 +9,7 @@
 		<div>Item Name: {{ item.itemname }}</div>
 		<div>Description: {{ item.description }}</div>
 		<div>Address: {{ item.address }}</div>
-		<div>Phone Number: {{ item.phone }}</div>
-		<div>Email: {{ item.email }}</div>
+		<div>Phone Number: <a href="tel://{{ item.phone }}">{{ item.phone }}</a></div>
+		<div>Email: <a href="mailto:{{ item.email }}">{{ item.email }}</a></div>
 	</body>
 </html>

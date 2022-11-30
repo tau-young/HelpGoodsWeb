@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>New Item - HelpGoodsWeb</title>
+		<title>Edit Item - HelpGoodsWeb</title>
 	</head>
 	<body>
 		<h1>New Item</h1>
-		<form action="{% url 'itemlist:new' %}" method="post">
+		<form action="{% url 'itemlist:edit' %}?id={{ item.id }}" method="post">
 			{% csrf_token %}
 			<div>
 				{{ form.categlory.label_tag }}
@@ -34,7 +34,7 @@
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}
-			<div><input type="submit" value="Add"></div>
+			<div><input type="submit" value="Confirm"></div>
 		</form>
 	</body>
 </html>

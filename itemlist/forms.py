@@ -4,7 +4,6 @@ class NewItemForm(forms.Form):
 	categlory = forms.CharField(label='Categlory')
 	itemname = forms.CharField(label='Item Name')
 	description = forms.CharField(label='Desciption')
-	publisher = forms.CharField(label='Publisher')
 	address = forms.CharField(label='Address')
 	phone = forms.CharField(label='Phone')
 	email = forms.EmailField()
