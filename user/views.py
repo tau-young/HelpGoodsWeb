@@ -10,7 +10,12 @@ from . import models
 def index(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
-	return render(request, 'UserInfo.html')
+	user = models.User.objects.get(username=request.user.username)
+	return render(request, 'UserInfo.html',
+	{
+		'user': user,
+		'usertype': models.UserType(user.usertype).name
+	})
 
 def login_view(request):
 	if request.method == 'POST':
