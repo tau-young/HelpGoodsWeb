@@ -2,8 +2,41 @@
 <html>
 	<head>
 		<title>Item List - HelpGoodsWeb</title>
+		<style>
+			table {
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+			td {
+				border: 1px solid black;
+				padding: 2px;
+			}
+			th {
+				border: 1px solid black;
+				padding: 2px;
+			}
+		</style>
 	</head>
 	<body>
-		Item List
+		<table>
+			<thead>
+				<th>Item Name</th>
+				<th>Description</th>
+				<th>Address</th>
+				<th>Phone Number</th>
+				<th>Email</th>
+			</thead>
+			<tbody>
+				{% for item in items %}
+				<tr>
+					<td><a href="{% url 'itemlist:index'%}">{{ item.itemname }}</a></td>
+					<td>{{ item.description }}</td>
+					<td>{{ item.address }}</td>
+					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
+					<td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</body>
 </html>
