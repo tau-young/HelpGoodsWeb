@@ -57,7 +57,7 @@ def register(request):
 					'message': message
 				})
 			User.objects.create_user(username, email, password)
-			models.User.create(username, password, address, phone, email).save()
+			models.User.create(username, address, phone, email).save()
 			return HttpResponseRedirect(reverse('user:login'))
 		return render(request, 'Register.html', {'form': form})
 	return render(request, 'Register.html', {'form': forms.RegisterForm()})
