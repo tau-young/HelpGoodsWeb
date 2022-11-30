@@ -7,16 +7,43 @@
 		<h1>Register</h1>
 		<form action="{% url 'user:register' %}" method="post">
 			{% csrf_token %}
-			<div><input type="text", name="username", placeholder="Username"></div>
+			{% comment %} <div><input type="text", name="username", placeholder="Username"></div>
 			<div><input type="password", name="password", placeholder="Password"></div>
 			<div><input type="password", name="password2", placeholder="Confirm Password"></div>
 			<div><input type="text", name="address", placeholder="Address"></div>
-			<div><input type="text", name="contactInfo", placeholder="Contact Info"></div>
+			<div><input type="text", name="contactInfo", placeholder="Contact Info"></div> {% endcomment %}
+			<div>
+				{{ form.username.label_tag }}
+				{{ form.username }}
+			</div>
+			<div>
+				{{ form.password.label_tag }}
+				{{ form.password }}
+			</div>
+			<div>
+				{{ form.cpassword.label_tag }}
+				{{ form.cpassword }}
+			</div>
+			<div>
+				{{ form.address.label_tag }}
+				{{ form.address }}
+			</div>
+			<div>
+				{{ form.phone.label_tag }}
+				{{ form.phone }}
+			</div>
+			<div>
+				{{ form.email.label_tag }}
+				{{ form.email }}
+			</div>
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}
 			<div><input type="submit" value="Register"></div>
 		</form>
+		{% for field in form %}
+		{{ field.errors }} 
+		{% endfor %}
 		<a href="{% url 'user:login' %}">Already have an account? Login >></a>
 	</body>
 </html>
