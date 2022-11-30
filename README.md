@@ -45,3 +45,34 @@
 	- [x] 物品编辑界面
 	- [x] 物品删除功能
 - [ ] 管理员后台界面
+
+## 使用说明
+
+本仓库不包含任何测试用数据以及项目开发缓存，所有数据需要自己生成。
+
+安装 Django
+```sh
+pip install django
+```
+克隆本仓库
+```sh
+git clone https://github.com/tau-young/HelpGoodsWeb.git
+```
+切换到根目录
+```sh
+cd HelpGoodsWeb
+```
+注册转移项
+```sh
+python manage.py makemigrations
+python manage.py migrate
+```
+创建超级用户
+```sh
+python manage.py createsuperuser
+```
+启动服务器
+```sh
+python manage.py runserver
+```
+在浏览器中访问 <localhost:8000>。
