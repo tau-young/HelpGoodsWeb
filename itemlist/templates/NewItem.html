@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Item List - HelpGoodsWeb</title>
+	</head>
+	<body>
+		<h1>New Item</h1>
+		<form action="{% url 'itemlist:new' %}" method="post">
+			{% csrf_token %}
+			<div>
+				{{ form.categlory.label_tag }}
+				{{ form.categlory }}
+			</div>
+			<div>
+				{{ form.itemname.label_tag }}
+				{{ form.itemname }}
+			</div>
+			<div>
+				{{ form.description.label_tag }}
+				{{ form.description }}
+			</div>
+			<div>
+				{{ form.address.label_tag }}
+				{{ form.address }}
+			</div>
+			<div>
+				{{ form.phone.label_tag }}
+				{{ form.phone }}
+			</div>
+			<div>
+				{{ form.email.label_tag }}
+				{{ form.email }}
+			</div>
+			{% if message %}
+			<div>{{ message }}</div>
+			{% endif %}
+			<div><input type="submit" value="Register"></div>
+		</form>
+	</body>
+</html>
