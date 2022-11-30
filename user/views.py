@@ -42,7 +42,7 @@ def register(request):
 			message = 'Passwords do not match!'
 		if models.User.objects.filter(username=username):
 			message = 'Username taken!'
-		if message:
+		if 'message' in locals():
 			return render(request, 'Register.html', {'message': message})
 		newUser = models.User()
 		newUser.username = username
