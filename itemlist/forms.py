@@ -7,7 +7,3 @@ class NewItemForm(forms.Form):
 	address = forms.CharField(label='Address')
 	phone = forms.CharField(label='Phone')
 	email = forms.EmailField()
-
-	@classmethod
-	def create(self, user):
-		return self('Item', '', '', user.address, user.phone, user.email)

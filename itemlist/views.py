@@ -17,4 +17,24 @@ def detail(request):
 	return render(request, 'Detail.html', {'item': models.Item.objects.get(id=request.GET['id'])})
 
 def new(request):
-	return render(request, 'NewItem.html', {'form': forms.NewItemForm.create(models.User.objects.get(username=request.user.username))})
+	if request.method == 'POST':
+		form = forms.NewItemForm(request.POST)
+		if form.is_valid():
+			categlory = form.cleaned_data['categlory']
+			itemname = form.cleaned_data['itemname']
+			description = form.cleaned_data['description']
+			address = form.cleaned_data['address']
+			phone = form.cleaned_data['phone']
+			email = form.cleaned_data['email']
+			models.Item.create(categlory, itemname, description, address, phone, email).save()
+			return HttpResponseRedirect(reverse('itemlist:index'))
+		return render(request, 'NewItem.html', {'form': form})
+	user = models.User.objects.get(username=request.user.username)
+	form = forms.NewItemForm(initial=
+	{
+		'categlory': 'Item',
+		'address': user.address,
+		'phone': user.phone,
+		'email': user.email
+	})
+	return render(request, 'NewItem.html', {'form': form})

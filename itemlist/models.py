@@ -10,3 +10,7 @@ class Item(models.Model):
 	address = models.CharField(max_length=128)
 	phone = models.CharField(max_length=128)
 	email = models.EmailField()
+
+	@classmethod
+	def create(self, categlory, itemname, description, address, phone, email):
+		return self(categlory=categlory, itemname=itemname, description=description, address=address, phone=phone, email=email)
