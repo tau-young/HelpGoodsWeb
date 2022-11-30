@@ -24,18 +24,27 @@
 			<thead>
 				<th>Item Name</th>
 				<th>Description</th>
+				<th>Publisher</th>
 				<th>Address</th>
 				<th>Phone Number</th>
 				<th>Email</th>
+				<th>Operation</th>
 			</thead>
 			<tbody>
 				{% for item in items %}
 				<tr>
 					<td><a href="{% url 'itemlist:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
 					<td>{{ item.description }}</td>
+					<td>{{ item.publisher }}</td>
 					<td>{{ item.address }}</td>
 					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
 					<td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+					<td>
+						{% if user.username == item.publisher %}
+						<button>Edit</button>
+						<button>Delete</button>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
