@@ -15,7 +15,10 @@ def index(request):
 	})
 
 def detail(request):
-	return render(request, 'Detail.html', {'item': models.Item.objects.get(id=request.GET['id'])})
+	try:
+		return render(request, 'Detail.html', {'item': models.Item.objects.get(id=request.GET['id'])})
+	except:
+		return HttpResponseRedirect(reverse('itemlist:index'))
 
 def new(request):
 	user = models.User.objects.get(username=request.user.username)
@@ -41,36 +44,42 @@ def new(request):
 	return render(request, 'NewItem.html', {'form': form})
 
 def edit(request):
-	user = models.User.objects.get(username=request.user.username)
-	item = models.Item.objects.get(id=request.GET['id'])
-	if user.username != item.publisher:
-		return HttpResponseRedirect(reverse('itemlist:index'))
-	if request.method == 'POST':
-		form = forms.NewItemForm(request.POST)
-		if form.is_valid():
-			item.categlory = form.cleaned_data['categlory']
-			item.itemname = form.cleaned_data['itemname']
-			item.description = form.cleaned_data['description']
-			item.address = form.cleaned_data['address']
-			item.phone = form.cleaned_data['phone']
-			item.email = form.cleaned_data['email']
-			item.save()
+	try:
+		user = models.User.objects.get(username=request.user.username)
+		item = models.Item.objects.get(id=request.GET['id'])
+		if user.username != item.publisher:
 			return HttpResponseRedirect(reverse('itemlist:index'))
+		if request.method == 'POST':
+			form = forms.NewItemForm(request.POST)
+			if form.is_valid():
+				item.categlory = form.cleaned_data['categlory']
+				item.itemname = form.cleaned_data['itemname']
+				item.description = form.cleaned_data['description']
+				item.address = form.cleaned_data['address']
+				item.phone = form.cleaned_data['phone']
+				item.email = form.cleaned_data['email']
+				item.save()
+				return HttpResponseRedirect(reverse('itemlist:index'))
+			return render(request, 'EditItem.html', {'form': form, 'item': item})
+		form = forms.NewItemForm(initial=
+		{
+			'categlory': item.categlory,
+			'itemname': item.itemname,
+			'description': item.description,
+			'address': item.address,
+			'phone': item.phone,
+			'email': item.email,
+		})
 		return render(request, 'EditItem.html', {'form': form, 'item': item})
-	form = forms.NewItemForm(initial=
-	{
-		'categlory': item.categlory,
-		'itemname': item.itemname,
-		'description': item.description,
-		'address': item.address,
-		'phone': item.phone,
-		'email': item.email,
-	})
-	return render(request, 'EditItem.html', {'form': form, 'item': item})
+	except:
+		return HttpResponseRedirect(reverse('itemlist:index'))
 
 def delete(request):
-	user = models.User.objects.get(username=request.user.username)
-	item = models.Item.objects.get(id=request.GET['id'])
-	if user.username == item.publisher:
-		item.delete()
-	return HttpResponseRedirect(reverse('itemlist:index'))
+	try:
+		user = models.User.objects.get(username=request.user.username)
+		item = models.Item.objects.get(id=request.GET['id'])
+		if user.username == item.publisher:
+			item.delete()
+		return HttpResponseRedirect(reverse('itemlist:index'))
+	except:
+		return HttpResponseRedirect(reverse('itemlist:index'))

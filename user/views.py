@@ -18,6 +18,8 @@ def index(request):
 	})
 
 def login_view(request):
+	if request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('user:index'))
 	if request.method == 'POST':
 		form = forms.LoginForm(request.POST)
 		if form.is_valid():
@@ -40,7 +42,7 @@ def logout_view(reqeset):
 	return HttpResponseRedirect(reverse('user:login'))
 
 def register(request):
-	if request.session.get('is_login', None):
+	if request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:index'))
 	if request.method == 'POST':
 		form = forms.RegisterForm(request.POST)
@@ -71,12 +73,11 @@ def detail(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
 	try:
-		username = request.GET['username']
+		user = models.User.objects.get(username=request.GET['username'])
+		return render(request, 'UserInfo.html',
+		{
+			'user': user,
+			'usertype': models.UserType(user.usertype).name
+		})
 	except:
-		username = request.user.username
-	user = models.User.objects.get(username=username)
-	return render(request, 'UserInfo.html',
-	{
-		'user': user,
-		'usertype': models.UserType(user.usertype).name
-	})
+		return HttpResponseRedirect(reverse('user:index'))
