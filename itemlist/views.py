@@ -7,3 +7,6 @@ def index(request):
 	{
 		'items': models.Item.objects.all()
 	})
+
+def detail(request):
+	return render(request, 'Detail.html', { 'item': models.Item.objects.get(id=request.GET['id'])})

@@ -18,6 +18,7 @@
 		</style>
 	</head>
 	<body>
+		<h1>Item List</h1>
 		<table>
 			<thead>
 				<th>Item Name</th>
@@ -29,7 +30,7 @@
 			<tbody>
 				{% for item in items %}
 				<tr>
-					<td><a href="{% url 'itemlist:index'%}">{{ item.itemname }}</a></td>
+					<td><a href="{% url 'itemlist:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
 					<td>{{ item.description }}</td>
 					<td>{{ item.address }}</td>
 					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
