@@ -1,0 +1,8 @@
+// {type:sequence}
+// {generate:true}
+
+[:User]-[note: Logged in]
+[:User]View User Info (id)>[:Website]
+[:Website]Get User Info (id)>[:Database]
+[:Database]User Info.>[:Website]
+[:Website]User Info View.>[:User]

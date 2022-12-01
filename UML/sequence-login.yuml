@@ -1,0 +1,9 @@
+// {type:sequence}
+// {generate:true}
+
+[:User]Visit>[:Website]
+[:Website]Login View.>[:User]
+[:User]Login Evidence>[:Website]
+[:Website]Authenticate>[:Database]
+[:Database]Success.>[:Website]
+[:Website]User Info View.>[:User]

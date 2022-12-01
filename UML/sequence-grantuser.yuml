@@ -1,0 +1,10 @@
+// {type:sequence}
+// {generate:true}
+
+[:Administrator]Visit>[:Website]
+[:Website]Todo Reminder.>[:Administrator]
+[:Administrator]Ready to Grant>[:Website]
+[:Website]Get Ungranted User>[:Database]
+[:Database]Ungranted User.>[:Administrator]
+[:Administrator]Grant User (id)>[:Website]
+[:Website]Change User Type (id)>[:Database]

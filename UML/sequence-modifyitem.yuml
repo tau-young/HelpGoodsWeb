@@ -1,0 +1,14 @@
+// {type:sequence}
+// {generate:true}
+
+[:User]-[note: Logged in]
+[:Website]-[note: Item List View]
+[:User]Modify Item (id)>[:Website]
+[:Website]Get User Info (username)>[:Database]
+[:Database]User Info.>[:Website]
+[:Website]Get Item Info (id)>[:Database]
+[:Database]Item Info.>[:Website]
+[:Website]Modify Item View.>[:User]
+[:User]Submit Item Info>[:Website]
+[:Website]Save Item Info>[:Database]
+[:Website]Item List View.>[:User]

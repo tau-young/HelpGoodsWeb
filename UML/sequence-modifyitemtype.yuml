@@ -1,0 +1,9 @@
+// {type:sequence}
+// {generate:true}
+
+[:Administrator]Modify Item Type (id)>[:Website]
+[:Website]Get Item Type (id)>[:Database]
+[:Database]Item Type Info.>[:Website]
+[:Website]Modify Item Type View.>[:Administrator]
+[:Administrator]Submit Item Type>[:Website]
+[:Website]Apply Item Type>[:Database]

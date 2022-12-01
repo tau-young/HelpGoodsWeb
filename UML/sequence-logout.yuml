@@ -1,0 +1,7 @@
+// {type:sequence}
+// {generate:true}
+
+[:User]-[note: Logged in]
+[:User]Logout>[:Website]
+[:Website]User Logout>[:Website]
+[:Website]Login View.>[:User]

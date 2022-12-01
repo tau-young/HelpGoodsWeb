@@ -1,0 +1,8 @@
+// {type:sequence}
+// {generate:true}
+
+[:User]-[note: Logged in]
+[:User]Show Item List>[:Website]
+[:Website]Get Item Info>[:Database]
+[:Database]Item Info.>[:Website]
+[:Website]Item List View.>[:User]
