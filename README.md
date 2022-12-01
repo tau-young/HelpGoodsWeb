@@ -62,12 +62,12 @@ git clone https://github.com/tau-young/HelpGoodsWeb.git
 ```sh
 cd HelpGoodsWeb
 ```
-注册转移项
+注册迁移项
 ```sh
 python manage.py makemigrations
 python manage.py migrate
 ```
-创建超级用户
+创建超级用户（如果需要访问后台管理页面）
 ```sh
 python manage.py createsuperuser
 ```
@@ -75,4 +75,4 @@ python manage.py createsuperuser
 ```sh
 python manage.py runserver
 ```
-在浏览器中访问 <localhost:8000>。
+在浏览器中访问 [localhost:8000](localhost:8000)。
