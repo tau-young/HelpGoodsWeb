@@ -35,7 +35,7 @@
 			<tbody>
 				{% for item in items %}
 				<tr>
-					<td><a href="{% url 'itemlist:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
+					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
 					<td>{{ item.description }}</td>
 					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>
@@ -43,14 +43,14 @@
 					<td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
 					<td>
 						{% if user.username == item.publisher %}
-						<a href="{% url 'itemlist:edit' %}?id={{ item.id }}">Edit</a>
-						<a href="{% url 'itemlist:delete' %}?id={{ item.id }}">Delete</a>
+						<a href="{% url 'item:edit' %}?id={{ item.id }}">Edit</a>
+						<a href="{% url 'item:delete' %}?id={{ item.id }}">Delete</a>
 						{% endif %}
 					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<a href="{% url 'itemlist:new' %}">Add new item</a>
+		<a href="{% url 'item:new' %}">Add new item</a>
 	</body>
 </html>

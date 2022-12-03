@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<h1>New Item</h1>
-		<form action="{% url 'itemlist:new' %}" method="post">
+		<form action="{% url 'item:new' %}" method="post">
 			{% csrf_token %}
 			<div>
 				{{ form.categlory.label_tag }}

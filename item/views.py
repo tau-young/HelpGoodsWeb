@@ -18,7 +18,7 @@ def detail(request):
 	try:
 		return render(request, 'Detail.html', {'item': models.Item.objects.get(id=request.GET['id'])})
 	except:
-		return HttpResponseRedirect(reverse('itemlist:index'))
+		return HttpResponseRedirect(reverse('item:index'))
 
 def new(request):
 	user = models.User.objects.get(username=request.user.username)
@@ -32,7 +32,7 @@ def new(request):
 			phone = form.cleaned_data['phone']
 			email = form.cleaned_data['email']
 			models.Item.create(categlory, itemname, description, user.username, address, phone, email).save()
-			return HttpResponseRedirect(reverse('itemlist:index'))
+			return HttpResponseRedirect(reverse('item:index'))
 		return render(request, 'NewItem.html', {'form': form})
 	form = forms.NewItemForm(initial=
 	{
@@ -48,7 +48,7 @@ def edit(request):
 		user = models.User.objects.get(username=request.user.username)
 		item = models.Item.objects.get(id=request.GET['id'])
 		if user.username != item.publisher:
-			return HttpResponseRedirect(reverse('itemlist:index'))
+			return HttpResponseRedirect(reverse('item:index'))
 		if request.method == 'POST':
 			form = forms.NewItemForm(request.POST)
 			if form.is_valid():
@@ -59,7 +59,7 @@ def edit(request):
 				item.phone = form.cleaned_data['phone']
 				item.email = form.cleaned_data['email']
 				item.save()
-				return HttpResponseRedirect(reverse('itemlist:index'))
+				return HttpResponseRedirect(reverse('item:index'))
 			return render(request, 'EditItem.html', {'form': form, 'item': item})
 		form = forms.NewItemForm(initial=
 		{
@@ -72,7 +72,7 @@ def edit(request):
 		})
 		return render(request, 'EditItem.html', {'form': form, 'item': item})
 	except:
-		return HttpResponseRedirect(reverse('itemlist:index'))
+		return HttpResponseRedirect(reverse('item:index'))
 
 def delete(request):
 	try:
@@ -80,6 +80,6 @@ def delete(request):
 		item = models.Item.objects.get(id=request.GET['id'])
 		if user.username == item.publisher:
 			item.delete()
-		return HttpResponseRedirect(reverse('itemlist:index'))
+		return HttpResponseRedirect(reverse('item:index'))
 	except:
-		return HttpResponseRedirect(reverse('itemlist:index'))
+		return HttpResponseRedirect(reverse('item:index'))
