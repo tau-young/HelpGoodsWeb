@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<h1>Welcome, {{ request.user.username }}</h1>
-		<a href="{% url 'itemlist:index' %}">View Item List</a>
+		<a href="{% url 'item:index' %}">View Item List</a>
 		<div>Username: {{ user.username }}</div>
 		<div>Address: {{ user.address }}</div>
 		<div>Phone Number: <a href="tel://{{ user.phone }}">{{ user.phone }}</a></div>

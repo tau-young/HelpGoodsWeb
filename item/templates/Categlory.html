@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Categlories - HelpGoodsWeb</title>
+	</head>
+	<body>
+		<h1>Categlories</h1>
+		{% for categlory in categlories %}
+		<div><a href="{% url 'item:categlory' categlory %}">{{ categlory }}</a></div>
+		{% endfor %}
+	</body>
+</html>

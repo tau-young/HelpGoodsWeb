@@ -7,11 +7,7 @@
 				border: 1px solid black;
 				border-collapse: collapse;
 			}
-			td {
-				border: 1px solid black;
-				padding: 2px;
-			}
-			th {
+			td,th {
 				border: 1px solid black;
 				padding: 2px;
 			}
@@ -24,8 +20,12 @@
 		</div>
 		<table>
 			<thead>
+				<th><a href="{% url 'item:categlories' %}">Categlory</th>
 				<th>Item Name</th>
 				<th>Description</th>
+				{% for attr in attrs %}
+				<th>{{ attr | title }}</th>
+				{% endfor %}
 				<th>Publisher</th>
 				<th>Address</th>
 				<th>Phone Number</th>
@@ -35,8 +35,13 @@
 			<tbody>
 				{% for item in items %}
 				<tr>
-					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.itemname }}</a></td>
+					<td>{{ item.categlory }}</td>
+					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.name }}</a></td>
 					<td>{{ item.description }}</td>
+					{% for attr in attrs %}
+					{% comment %} FIXME: Unable to present value {% endcomment %}
+					<th>{{ attr }}</th>
+					{% endfor %}
 					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>
 					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
