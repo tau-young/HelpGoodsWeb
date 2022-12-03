@@ -18,13 +18,14 @@
 		<div>
 			Current User: <a href="{% url 'user:detail' %}?username={{ user.username }}">{{ user.username }}</a>
 		</div>
+		{% load unpack %}
 		<table>
 			<thead>
 				<th><a href="{% url 'item:categlories' %}">Categlory</th>
 				<th>Item Name</th>
 				<th>Description</th>
 				{% for attr in attrs %}
-				<th>{{ attr | title }}</th>
+				<th>{{ attr }}</th>
 				{% endfor %}
 				<th>Publisher</th>
 				<th>Address</th>
@@ -35,12 +36,12 @@
 			<tbody>
 				{% for item in items %}
 				<tr>
-					<td>{{ item.categlory }}</td>
+					<td><a href="{% url 'item:categlory' item.categlory %}">{{ item.categlory }}</a></td>
 					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.name }}</a></td>
 					<td>{{ item.description }}</td>
-					{% for attr in attrs %}
+					{% for attr, value in extra.items %}
 					{% comment %} FIXME: Unable to present value {% endcomment %}
-					<th>{{ attr }}</th>
+					<td>{% unpack value forloop.parentloop.counter0 %}</td>
 					{% endfor %}
 					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>

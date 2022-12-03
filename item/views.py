@@ -88,14 +88,17 @@ def delete(request):
 def categlories(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
-	return render(request, 'Categlory.html', {'categlories': [cate for cate, cls in inspect.getmembers(models, inspect.isclass) if not cate in ['BaseItem', 'User']]})
+	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['BaseItem', 'User']]})
 
 def categlory(request, cate):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
+	items = getattr(models, cate).objects.all()
+	attrs = [attr for attr in [field.name for field in getattr(models, cate)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
 	return render(request, 'Table.html',
 	{
-		'items': getattr(models, cate).objects.all(),
-		'attrs': [attr.replace('_', ' ') for attr in [field.name for field in getattr(models, cate)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]],
+		'items': items,
+		'attrs': [attr.replace('_', ' ') if attr.isupper() else attr.replace('_', ' ').title() for attr in attrs],
+		'extra': {attr: [getattr(item, attr) for item in items] for attr in attrs},
 		'user': models.User.objects.get(username=request.user.username)
 	})

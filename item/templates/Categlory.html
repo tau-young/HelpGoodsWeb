@@ -5,8 +5,10 @@
 	</head>
 	<body>
 		<h1>Categlories</h1>
-		{% for categlory in categlories %}
-		<div><a href="{% url 'item:categlory' categlory %}">{{ categlory }}</a></div>
-		{% endfor %}
+		<ul>
+			{% for categlory in categlories %}
+			<li><a href="{% url 'item:categlory' categlory %}">{{ categlory }}</a></li>
+			{% endfor %}
+		</ul>
 	</body>
 </html>

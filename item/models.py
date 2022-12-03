@@ -21,3 +21,8 @@ class Item(BaseItem):
 
 class Food(BaseItem):
 	best_before = models.CharField(max_length=128)
+
+class Book(BaseItem):
+	author = models.CharField(max_length=1024)
+	ISBN = models.CharField(max_length=1024)
+	publish = models.CharField(max_length=1024)
