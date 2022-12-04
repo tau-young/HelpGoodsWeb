@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -7,9 +8,8 @@ from . import forms
 from . import models
 
 # Create your views here.
+@login_required
 def index(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	user = models.User.objects.get(username=request.user.username)
 	return render(request, 'UserInfo.html',
 	{
@@ -69,9 +69,8 @@ def register(request):
 		return render(request, 'Register.html', {'form': form})
 	return render(request, 'Register.html', {'form': forms.RegisterForm()})
 
+@login_required
 def info(request, username):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	try:
 		user = models.User.objects.get(username=username)
 		return render(request, 'UserInfo.html',

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import inspect
@@ -6,18 +7,16 @@ from . import forms
 from . import models
 
 # Create your views here.
+@login_required
 def index(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	return render(request, 'Table.html',
 	{
 		'items': models.Base.objects.all(),
 		'user': models.User.objects.get(username=request.user.username)
 	})
 
+@login_required
 def detail(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	try:
 		item = models.Base.objects.get(id=request.GET['id'])
 		item = getattr(models, item.categlory).objects.get(id=request.GET['id'])
@@ -31,9 +30,8 @@ def detail(request):
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
 
+@login_required
 def new(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	user = models.User.objects.get(username=request.user.username)
 	if request.method == 'POST':
 		form = forms.NewItemForm(request.POST)
@@ -56,6 +54,7 @@ def new(request):
 	})
 	return render(request, 'NewItem.html', {'form': form})
 
+@login_required
 def edit(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
@@ -87,6 +86,7 @@ def edit(request):
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
 
+@login_required
 def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
@@ -97,14 +97,12 @@ def delete(request):
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
 
+@login_required
 def categlories(request):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
 
+@login_required
 def categlory(request, cate):
-	if not request.user.is_authenticated:
-		return HttpResponseRedirect(reverse('user:login'))
 	items = getattr(models, cate).objects.all()
 	attrs = [attr for attr in [field.name for field in getattr(models, cate)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
 	return render(request, 'Table.html',
