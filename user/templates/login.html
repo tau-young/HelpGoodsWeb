@@ -7,14 +7,7 @@
 		<h1>Login</h1>
 		<form action="{% url 'user:login' %}" method="post">
 			{% csrf_token %}
-			<div>
-				{{ form.username.label_tag }}
-				{{ form.username }}
-			</div>
-			<div>
-				{{ form.password.label_tag }}
-				{{ form.password }}
-			</div>
+			{{ form.as_div }}
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}

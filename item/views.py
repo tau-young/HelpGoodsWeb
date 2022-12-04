@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import inspect
@@ -7,7 +7,11 @@ from . import forms
 from . import models
 
 # Create your views here.
+def active_check(user):
+	return user.is_active
+
 @login_required
+@user_passes_test(active_check)
 def index(request):
 	return render(request, 'Table.html',
 	{
@@ -16,6 +20,7 @@ def index(request):
 	})
 
 @login_required
+@user_passes_test(active_check)
 def detail(request):
 	try:
 		item = models.Base.objects.get(id=request.GET['id'])
@@ -31,6 +36,7 @@ def detail(request):
 		return HttpResponseRedirect(reverse('item:index'))
 
 @login_required
+@user_passes_test(active_check)
 def new(request):
 	user = models.User.objects.get(username=request.user.username)
 	if request.method == 'POST':
@@ -55,6 +61,7 @@ def new(request):
 	return render(request, 'NewItem.html', {'form': form})
 
 @login_required
+@user_passes_test(active_check)
 def edit(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
@@ -87,6 +94,7 @@ def edit(request):
 		return HttpResponseRedirect(reverse('item:index'))
 
 @login_required
+@user_passes_test(active_check)
 def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
@@ -98,10 +106,12 @@ def delete(request):
 		return HttpResponseRedirect(reverse('item:index'))
 
 @login_required
+@user_passes_test(active_check)
 def categlories(request):
 	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
 
 @login_required
+@user_passes_test(active_check)
 def categlory(request, cate):
 	items = getattr(models, cate).objects.all()
 	attrs = [attr for attr in [field.name for field in getattr(models, cate)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]

@@ -7,30 +7,7 @@
 		<h1>Register</h1>
 		<form action="{% url 'user:register' %}" method="post">
 			{% csrf_token %}
-			<div>
-				{{ form.username.label_tag }}
-				{{ form.username }}
-			</div>
-			<div>
-				{{ form.password.label_tag }}
-				{{ form.password }}
-			</div>
-			<div>
-				{{ form.cpassword.label_tag }}
-				{{ form.cpassword }}
-			</div>
-			<div>
-				{{ form.address.label_tag }}
-				{{ form.address }}
-			</div>
-			<div>
-				{{ form.phone.label_tag }}
-				{{ form.phone }}
-			</div>
-			<div>
-				{{ form.email.label_tag }}
-				{{ form.email }}
-			</div>
+			{{ form.as_div }}
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}

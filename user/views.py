@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import *
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -8,13 +8,16 @@ from . import forms
 from . import models
 
 # Create your views here.
+def active_check(user):
+	return user.is_active
+
 @login_required
 def index(request):
 	user = models.User.objects.get(username=request.user.username)
 	return render(request, 'UserInfo.html',
 	{
 		'user': user,
-		'usertype': models.UserType(user.usertype).name
+		'is_active': 'Yes' if request.user.is_active else 'No'
 	})
 
 def login_view(request):
@@ -63,20 +66,23 @@ def register(request):
 					'form': form,
 					'message': message
 				})
-			User.objects.create_user(username, email, password)
+			user = User.objects.create_user(username, email, password)
+			user.is_active = False
+			user.save()
 			models.User.create(username, address, phone, email).save()
 			return HttpResponseRedirect(reverse('user:login'))
 		return render(request, 'Register.html', {'form': form})
 	return render(request, 'Register.html', {'form': forms.RegisterForm()})
 
 @login_required
+@user_passes_test(active_check)
 def info(request, username):
 	try:
 		user = models.User.objects.get(username=username)
 		return render(request, 'UserInfo.html',
 		{
 			'user': user,
-			'usertype': models.UserType(user.usertype).name
+			'is_active': 'Yes' if request.user.is_active else 'No'
 		})
 	except:
 		return HttpResponseRedirect(reverse('user:index'))

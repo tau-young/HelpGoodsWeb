@@ -10,7 +10,10 @@
 		<div>Address: {{ user.address }}</div>
 		<div>Phone Number: <a href="tel://{{ user.phone }}">{{ user.phone }}</a></div>
 		<div>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
-		<div>User Type: {{ usertype }}</div>
+		<div>Active: {{ is_active }}</div>
+		{% if is_active == 'No' %}
+		<div>Your account is inactive. Do not attempt to visit other pages.</div>
+		{% endif %}
 		<a href="{% url 'user:logout' %}">Logout</a>
 	</body>
 </html>
