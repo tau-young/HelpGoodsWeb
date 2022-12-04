@@ -1,40 +1,17 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Edit Item - HelpGoodsWeb</title>
-	</head>
-	<body>
-		<h1>New Item</h1>
-		<form action="{% url 'item:edit' %}?id={{ item.id }}" method="post">
-			{% csrf_token %}
-			<div>
-				{{ form.categlory.label_tag }}
-				{{ form.categlory }}
-			</div>
-			<div>
-				{{ form.name.label_tag }}
-				{{ form.name }}
-			</div>
-			<div>
-				{{ form.description.label_tag }}
-				{{ form.description }}
-			</div>
-			<div>
-				{{ form.address.label_tag }}
-				{{ form.address }}
-			</div>
-			<div>
-				{{ form.phone.label_tag }}
-				{{ form.phone }}
-			</div>
-			<div>
-				{{ form.email.label_tag }}
-				{{ form.email }}
-			</div>
-			{% if message %}
-			<div>{{ message }}</div>
-			{% endif %}
-			<div><input type="submit" value="Confirm"></div>
-		</form>
-	</body>
-</html>
+{% extends 'NewItem.html' %}
+
+{% block title %}
+<title>Edit Item - HelpGoodsWeb</title>
+{% endblock %}
+
+{% block header %}
+<h1>Edit Item</h1>
+{% endblock %}
+
+{% block form %}
+<form action="{% url 'item:edit' %}" method="post">
+{% endblock %}
+
+{% block submit %}
+<input type="submit" value="Confirm">
+{% endblock %}

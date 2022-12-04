@@ -1,40 +1,27 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		{% block title %}
 		<title>New Item - HelpGoodsWeb</title>
+		{% endblock %}
 	</head>
 	<body>
+		{% block header %}
 		<h1>New Item</h1>
+		{% endblock %}
+		{% block form %}
 		<form action="{% url 'item:new' %}" method="post">
+		{% endblock %}
 			{% csrf_token %}
-			<div>
-				{{ form.categlory.label_tag }}
-				{{ form.categlory }}
-			</div>
-			<div>
-				{{ form.name.label_tag }}
-				{{ form.name }}
-			</div>
-			<div>
-				{{ form.description.label_tag }}
-				{{ form.description }}
-			</div>
-			<div>
-				{{ form.address.label_tag }}
-				{{ form.address }}
-			</div>
-			<div>
-				{{ form.phone.label_tag }}
-				{{ form.phone }}
-			</div>
-			<div>
-				{{ form.email.label_tag }}
-				{{ form.email }}
-			</div>
+			{{ form.as_div }}
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}
-			<div><input type="submit" value="Add"></div>
+			<div>
+				{% block submit %}
+				<input type="submit" value="Add">
+				{% endblock %}
+			</div>
 		</form>
 	</body>
 </html>
