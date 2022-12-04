@@ -69,11 +69,11 @@ def register(request):
 		return render(request, 'Register.html', {'form': form})
 	return render(request, 'Register.html', {'form': forms.RegisterForm()})
 
-def detail(request):
+def info(request, username):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
 	try:
-		user = models.User.objects.get(username=request.GET['username'])
+		user = models.User.objects.get(username=username)
 		return render(request, 'UserInfo.html',
 		{
 			'user': user,

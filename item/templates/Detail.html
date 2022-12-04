@@ -12,7 +12,7 @@
 		{% for attr, value in extra.items %}
 		<div>{% titler attr %}: {{ value }}</div>
 		{% endfor %}
-		<div>Publisher: <a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></div>
+		<div>Publisher: <a href="{% url 'user:info' item.publisher %}">{{ item.publisher }}</a></div>
 		<div>Address: {{ item.address }}</div>
 		<div>Phone Number: <a href="tel://{{ item.phone }}">{{ item.phone }}</a></div>
 		<div>Email: <a href="mailto:{{ item.email }}">{{ item.email }}</a></div>

@@ -11,7 +11,7 @@ def index(request):
 		return HttpResponseRedirect(reverse('user:login'))
 	return render(request, 'Table.html',
 	{
-		'items': models.BaseItem.objects.all(),
+		'items': models.Base.objects.all(),
 		'user': models.User.objects.get(username=request.user.username)
 	})
 
@@ -19,7 +19,7 @@ def detail(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
 	try:
-		item = models.BaseItem.objects.get(id=request.GET['id'])
+		item = models.Base.objects.get(id=request.GET['id'])
 		item = getattr(models, item.categlory).objects.get(id=request.GET['id'])
 		attrs = [attr for attr in [field.name for field in getattr(models, item.categlory)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
 		return render(request, 'Detail.html',
@@ -59,7 +59,7 @@ def new(request):
 def edit(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
-		item = models.BaseItem.objects.get(id=request.GET['id'])
+		item = models.Base.objects.get(id=request.GET['id'])
 		if user.username != item.publisher:
 			return HttpResponseRedirect(reverse('item:index'))
 		if request.method == 'POST':
@@ -90,7 +90,7 @@ def edit(request):
 def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
-		item = models.BaseItem.objects.get(id=request.GET['id'])
+		item = models.Base.objects.get(id=request.GET['id'])
 		if user.username == item.publisher:
 			item.delete()
 		return HttpResponseRedirect(reverse('item:index'))
@@ -100,7 +100,7 @@ def delete(request):
 def categlories(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('user:login'))
-	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['BaseItem', 'User']]})
+	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
 
 def categlory(request, cate):
 	if not request.user.is_authenticated:

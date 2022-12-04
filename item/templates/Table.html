@@ -16,7 +16,7 @@
 	<body>
 		<h1>Item List</h1>
 		<div>
-			Current User: <a href="{% url 'user:detail' %}?username={{ user.username }}">{{ user.username }}</a>
+			Current User: <a href="{% url 'user:info' user.username %}">{{ user.username }}</a>
 		</div>
 		{% load customtags %}
 		<table>
@@ -42,7 +42,7 @@
 					{% for attr, value in extra.items %}
 					<td>{% digin value forloop.parentloop.counter0 %}</td>
 					{% endfor %}
-					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
+					<td><a href="{% url 'user:info' item.publisher %}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>
 					<td><a href="tel://{{ item.phone }}">{{ item.phone }}</a></td>
 					<td><a href="mailto:{{ item.email }}">{{ item.email }}</a></td>
