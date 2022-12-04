@@ -18,14 +18,14 @@
 		<div>
 			Current User: <a href="{% url 'user:detail' %}?username={{ user.username }}">{{ user.username }}</a>
 		</div>
-		{% load unpack %}
+		{% load customtags %}
 		<table>
 			<thead>
 				<th><a href="{% url 'item:categlories' %}">Categlory</th>
 				<th>Item Name</th>
 				<th>Description</th>
-				{% for attr in attrs %}
-				<th>{{ attr }}</th>
+				{% for attr in extra %}
+				<th>{% titler attr %}</th>
 				{% endfor %}
 				<th>Publisher</th>
 				<th>Address</th>
@@ -40,8 +40,7 @@
 					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.name }}</a></td>
 					<td>{{ item.description }}</td>
 					{% for attr, value in extra.items %}
-					{% comment %} FIXME: Unable to present value {% endcomment %}
-					<td>{% unpack value forloop.parentloop.counter0 %}</td>
+					<td>{% digin value forloop.parentloop.counter0 %}</td>
 					{% endfor %}
 					<td><a href="{% url 'user:detail'%}?username={{ item.publisher }}">{{ item.publisher }}</a></td>
 					<td>{{ item.address }}</td>

@@ -16,12 +16,24 @@ def index(request):
 	})
 
 def detail(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('user:login'))
 	try:
-		return render(request, 'Detail.html', {'item': models.Item.objects.get(id=request.GET['id'])})
+		item = models.BaseItem.objects.get(id=request.GET['id'])
+		item = getattr(models, item.categlory).objects.get(id=request.GET['id'])
+		attrs = [attr for attr in [field.name for field in getattr(models, item.categlory)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
+		return render(request, 'Detail.html',
+		{
+			'item': item,
+			'attrs': attrs,
+			'extra': {attr: getattr(item, attr) for attr in attrs},
+		})
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
 
 def new(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('user:login'))
 	user = models.User.objects.get(username=request.user.username)
 	if request.method == 'POST':
 		form = forms.NewItemForm(request.POST)
@@ -47,7 +59,7 @@ def new(request):
 def edit(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
-		item = models.Item.objects.get(id=request.GET['id'])
+		item = models.BaseItem.objects.get(id=request.GET['id'])
 		if user.username != item.publisher:
 			return HttpResponseRedirect(reverse('item:index'))
 		if request.method == 'POST':
@@ -78,7 +90,7 @@ def edit(request):
 def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
-		item = models.Item.objects.get(id=request.GET['id'])
+		item = models.BaseItem.objects.get(id=request.GET['id'])
 		if user.username == item.publisher:
 			item.delete()
 		return HttpResponseRedirect(reverse('item:index'))
@@ -98,7 +110,6 @@ def categlory(request, cate):
 	return render(request, 'Table.html',
 	{
 		'items': items,
-		'attrs': [attr.replace('_', ' ') if attr.isupper() else attr.replace('_', ' ').title() for attr in attrs],
 		'extra': {attr: [getattr(item, attr) for item in items] for attr in attrs},
 		'user': models.User.objects.get(username=request.user.username)
 	})
