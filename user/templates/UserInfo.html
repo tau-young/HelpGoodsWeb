@@ -11,8 +11,13 @@
 		<div>Phone Number: <a href="tel://{{ user.phone }}">{{ user.phone }}</a></div>
 		<div>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></div>
 		<div>Active: {{ is_active }}</div>
-		{% if is_active == 'No' %}
+		{% if not is_active %}
 		<div>Your account is inactive. Do not attempt to visit other pages.</div>
+		{% endif %}
+		{% if is_staff %}
+		<div>
+			You are a staff. <a href="{% url 'staff:index' %}">Click here</a> to manage settings.
+		</div>
 		{% endif %}
 		<a href="{% url 'user:logout' %}">Logout</a>
 	</body>

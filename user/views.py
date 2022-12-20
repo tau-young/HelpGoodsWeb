@@ -17,7 +17,8 @@ def index(request):
 	return render(request, 'UserInfo.html',
 	{
 		'user': user,
-		'is_active': 'Yes' if request.user.is_active else 'No'
+		'is_active': request.user.is_active,
+		'is_staff': request.user.is_staff
 	})
 
 def login_view(request):
@@ -82,7 +83,8 @@ def info(request, username):
 		return render(request, 'UserInfo.html',
 		{
 			'user': user,
-			'is_active': 'Yes' if request.user.is_active else 'No'
+			'is_active': request.user.is_active,
+			'is_staff': request.user.is_staff
 		})
 	except:
 		return HttpResponseRedirect(reverse('user:index'))
