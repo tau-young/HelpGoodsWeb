@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>New Categlory - HelpGoodsWeb</title>
+	</head>
+	<body>
+		<h1>New Categlory</h1>
+		<form action="{% url 'staff:new' %}" method="post">
+			{% csrf_token %}
+			{{ form.as_div }}
+			<div>Enter attributes of the new categlory, one attribute per line.</div>
+			<div><input type="submit" value="Add"></div>
+		</form>
+	</body>
+</html>

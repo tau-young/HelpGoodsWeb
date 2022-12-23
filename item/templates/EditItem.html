@@ -1,15 +1,15 @@
 {% extends 'NewItem.html' %}
 
 {% block title %}
-<title>Edit Item - HelpGoodsWeb</title>
+<title>Edit {{ categlory }} - HelpGoodsWeb</title>
 {% endblock %}
 
 {% block header %}
-<h1>Edit Item</h1>
+<h1>Edit {{ categlory }}</h1>
 {% endblock %}
 
 {% block form %}
-<form action="{% url 'item:edit' %}" method="post">
+<form action="{% url 'item:edit' %}?id={{ id }}" method="post">
 {% endblock %}
 
 {% block submit %}

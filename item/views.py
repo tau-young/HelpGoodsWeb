@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-import inspect
-from . import forms
-from . import models
+from . import forms, models
+from staff.models import Categlory
+import json
 
 # Create your views here.
 def active_check(user):
@@ -23,25 +23,22 @@ def index(request):
 @login_required
 @user_passes_test(active_check)
 def detail(request):
-	try:
-		item = models.Base.objects.get(id=request.GET['id'])
-		item = getattr(models, item.categlory).objects.get(id=request.GET['id'])
-		attrs = [attr for attr in [field.name for field in getattr(models, item.categlory)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
-		return render(request, 'Detail.html',
-		{
-			'item': item,
-			'attrs': attrs,
-			'extra': {attr: getattr(item, attr) for attr in attrs},
-		})
-	except:
-		return HttpResponseRedirect(reverse('item:index'))
+	item = models.Item.objects.get(id=request.GET['id'])
+	attrs = json.loads(Categlory.objects.get(name=item.categlory).attributes)
+	return render(request, 'Detail.html',
+	{
+		'item': item,
+		'attrs': attrs,
+		'extra': {attr: json.loads(item.extra)[attr] for attr in attrs},
+	})
 
 @login_required
 @user_passes_test(active_check)
 def new(request, categlory=''):
 	if not categlory:
-		return render(request, 'New.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
+		return render(request, 'New.html', {'categlories': [cate.name for cate in Categlory.objects.all()]})
 	user = models.User.objects.get(username=request.user.username)
+	attributes = {attr: '' for attr in json.loads(Categlory.objects.get(name=categlory).attributes)}
 	if request.method == 'POST':
 		form = forms.NewItemForm(request.POST)
 		if form.is_valid():
@@ -51,50 +48,72 @@ def new(request, categlory=''):
 			address = form.cleaned_data['address']
 			phone = form.cleaned_data['phone']
 			email = form.cleaned_data['email']
-			getattr(models, categlory).create(categlory, name, description, user.username, address, phone, email).save()
+			item = models.Item.create(categlory, name, description, user.username, address, phone, email)
+			attributes = {attr: request.POST[attr.replace(' ', '_')] for attr, _ in attributes.items()}
+			item.extra = json.dumps(attributes)
+			item.save()
 			return HttpResponseRedirect(reverse('item:index'))
-		return render(request, 'NewItem.html', {'categlory': categlory, 'form': form})
-	form = forms.NewItemForm(initial=
+		return render(request, 'NewItem.html',
+		{
+			'categlory': categlory,
+			'form': form,
+			'attributes': attributes.items(),
+		})
+	return render(request, 'NewItem.html',
 	{
 		'categlory': categlory,
-		'address': user.address,
-		'phone': user.phone,
-		'email': user.email,
+		'form': forms.NewItemForm(initial={
+			'categlory': categlory,
+			'address': user.address,
+			'phone': user.phone,
+			'email': user.email,
+		}),
+		'attributes': attributes.items(),
 	})
-	return render(request, 'NewItem.html', {'categlory': categlory, 'form': form})
 
 @login_required
 @user_passes_test(active_check)
 def edit(request):
-	try:
-		user = models.User.objects.get(username=request.user.username)
-		item = models.Base.objects.get(id=request.GET['id'])
-		if user.username != item.publisher:
+	user = models.User.objects.get(username=request.user.username)
+	item = models.Item.objects.get(id=request.GET['id'])
+	attributes = json.loads(item.extra)
+	if user.username != item.publisher:
+		return HttpResponseRedirect(reverse('item:index'))
+	if request.method == 'POST':
+		form = forms.NewItemForm(request.POST)
+		if form.is_valid():
+			item.name = form.cleaned_data['name']
+			item.description = form.cleaned_data['description']
+			item.address = form.cleaned_data['address']
+			item.phone = form.cleaned_data['phone']
+			item.email = form.cleaned_data['email']
+			attributes = {attr: request.POST[attr.replace(' ', '_')] for attr, _ in attributes.items()}
+			item.extra = json.dumps(attributes)
+			item.save()
 			return HttpResponseRedirect(reverse('item:index'))
-		if request.method == 'POST':
-			form = forms.NewItemForm(request.POST)
-			if form.is_valid():
-				item.categlory = form.cleaned_data['categlory']
-				item.name = form.cleaned_data['name']
-				item.description = form.cleaned_data['description']
-				item.address = form.cleaned_data['address']
-				item.phone = form.cleaned_data['phone']
-				item.email = form.cleaned_data['email']
-				item.save()
-				return HttpResponseRedirect(reverse('item:index'))
-			return render(request, 'EditItem.html', {'form': form, 'item': item})
-		form = forms.NewItemForm(initial=
+		return render(request, 'EditItem.html',
 		{
+			'id': request.GET['id'],
+			'categlory': categlory,
+			'form': form,
+			'attributes': attributes.items(),
+			'item': item,
+		})
+	return render(request, 'EditItem.html',
+	{
+		'id': request.GET['id'],
+		'categlory': categlory,
+		'form': forms.NewItemForm(initial={
 			'categlory': item.categlory,
 			'name': item.name,
 			'description': item.description,
 			'address': item.address,
 			'phone': item.phone,
 			'email': item.email,
-		})
-		return render(request, 'EditItem.html', {'form': form, 'item': item})
-	except:
-		return HttpResponseRedirect(reverse('item:index'))
+		}),
+		'attributes': attributes.items(),
+		'item': item,
+	})
 
 @login_required
 @user_passes_test(active_check)
@@ -102,8 +121,7 @@ def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
 		item = models.Base.objects.get(id=request.GET['id'])
-		if user.username == item.publisher:
-			item.delete()
+		if user.username == item.publisher: item.delete()
 		return HttpResponseRedirect(reverse('item:index'))
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
@@ -112,13 +130,13 @@ def delete(request):
 @user_passes_test(active_check)
 def categlory(request, categlory=''):
 	if not categlory:
-		return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
-	items = getattr(models, categlory).objects.all()
-	attrs = [attr for attr in [field.name for field in getattr(models, categlory)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
+		return render(request, 'Categlory.html', {'categlories': [cate.name for cate in Categlory.objects.all()]})
+	items = models.Item.objects.filter(categlory=categlory)
+	attrs = json.loads(Categlory.objects.get(name=categlory).attributes)
 	return render(request, 'Table.html',
 	{
 		'categlory': categlory,
 		'items': items,
-		'extra': {attr: [getattr(item, attr) for item in items] for attr in attrs},
-		'user': models.User.objects.get(username=request.user.username)
+		'extra': {attr: [json.loads(item.extra)[attr] for item in items] for attr in attrs},
+		'user': models.User.objects.get(username=request.user.username),
 	})

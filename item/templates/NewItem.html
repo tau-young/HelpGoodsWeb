@@ -9,11 +9,18 @@
 		{% block header %}
 		<h1>New {{ categlory }}</h1>
 		{% endblock %}
+		{% load customtags %}
 		{% block form %}
-		<form action="{% url 'item:new' %}" method="post">
+		<form action="{% url 'item:new' categlory %}" method="post">
 		{% endblock %}
 			{% csrf_token %}
 			{{ form.as_div }}
+			{% for attr, value in attributes %}
+			<div>
+				<label>{% titler attr %}: </label>
+				<input type="text" name="{% underline attr %}" value={{ value }}>
+			</div>
+			{% endfor %}
 			{% if message %}
 			<div>{{ message }}</div>
 			{% endif %}
