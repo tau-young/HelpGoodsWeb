@@ -68,7 +68,8 @@ def register(request):
 					'message': message
 				})
 			user = User.objects.create_user(username, email, password)
-			user.is_active = False
+			if User.objects.count: user.is_active = False
+			else: user.is_staff = True
 			user.save()
 			models.User.create(username, address, phone, email).save()
 			return HttpResponseRedirect(reverse('user:login'))
