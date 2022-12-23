@@ -1,0 +1,9 @@
+// {type:class}
+// {direction:leftToRight}
+// {generate:true}
+
+[User|username;address;phone;email|create()]^[Administrator||approve();reject();create_category()]
+[Base|id;category;name;description;publisher;address;phone;email|create();edit();delete()]^[Item|extra]
+[User]1-*>[Item]
+[Category|id;name;attributes|create()]1-*>[Item]
+[Administrator]*-*>[Category]

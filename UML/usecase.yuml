@@ -25,8 +25,5 @@
 [User]-(Logout)
 [Administrator]-(Set New Item Type)
 (Set New Item Type)>(Apply Item Type)
-[Administrator]-(Modify Item Type)
-(Modify Item Type)>(Get Item Type)
-(Modify Item Type)>(Apply Item Type)
 [Administrator]-(Grant User)
 (Grant User)>(Get User Info)
