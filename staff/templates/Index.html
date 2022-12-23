@@ -43,8 +43,8 @@
 		{% endif %}
 		<h2>Categlories</h2>
 		<ul>
-			{% for categlory in categlories %}
-			<li><a href="{% url 'item:categlory' categlory %}">{{ categlory }}</a></li>
+			{% for category in categlories %}
+			<li><a href="{% url 'item:category' category %}">{{ category }}</a></li>
 			{% endfor %}
 			<li><a href="{% url 'staff:new' %}">New...</a></li>
 		</ul>

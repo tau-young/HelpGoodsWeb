@@ -15,7 +15,7 @@ def index(request):
 	return render(request, 'Index.html',
 	{
 		'inactive': inactive_users,
-		'categlories': [cate.name for cate in models.Categlory.objects.all()]
+		'categlories': [cate.name for cate in models.Category.objects.all()]
 	})
 
 @staff_member_required
@@ -34,11 +34,11 @@ def reject(request):
 @staff_member_required
 def new(request):
 	if request.method == 'POST':
-		form = forms.NewCategloryForm(request.POST)
+		form = forms.NewCategoryForm(request.POST)
 		if form.is_valid():
 			name = form.cleaned_data['name']
 			attributes = form.cleaned_data['attributes'].split('\r\n') if form.cleaned_data['attributes'] else ''
-			models.Categlory.create(name, json.dumps(attributes)).save()
+			models.Category.create(name, json.dumps(attributes)).save()
 			return HttpResponseRedirect(reverse('staff:index'))
-		return render(request, 'NewCateglory.html', {'form': form})
-	return render(request, 'NewCateglory.html', {'form': forms.NewCategloryForm()})
+		return render(request, 'NewCategory.html', {'form': form})
+	return render(request, 'NewCategory.html', {'form': forms.NewCategoryForm()})

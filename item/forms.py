@@ -7,5 +7,5 @@ class NewItemForm(forms.ModelForm):
 		model = models.Base
 		exclude = ['publisher']
 		widgets = {
-			'categlory': forms.HiddenInput()
+			'category': forms.HiddenInput()
 		}

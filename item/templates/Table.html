@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{ categlory }} List - HelpGoodsWeb</title>
+		<title>{{ category }} List - HelpGoodsWeb</title>
 		<style>
 			table {
 				border: 1px solid black;
@@ -14,14 +14,14 @@
 		</style>
 	</head>
 	<body>
-		<h1>{{ categlory }} List</h1>
+		<h1>{{ category }} List</h1>
 		<div>
 			Current User: <a href="{% url 'user:info' user.username %}">{{ user.username }}</a>
 		</div>
 		{% load customtags %}
 		<table>
 			<thead>
-				<th><a href="{% url 'item:categlory' %}">Categlory</th>
+				<th><a href="{% url 'item:category' %}">Category</th>
 				<th>Item Name</th>
 				<th>Description</th>
 				{% for attr in extra %}
@@ -36,7 +36,7 @@
 			<tbody>
 				{% for item in items %}
 				<tr>
-					<td><a href="{% url 'item:categlory' item.categlory %}">{{ item.categlory }}</a></td>
+					<td><a href="{% url 'item:category' item.category %}">{{ item.category }}</a></td>
 					<td><a href="{% url 'item:detail'%}?id={{ item.id }}">{{ item.name }}</a></td>
 					<td>{{ item.description }}</td>
 					{% for attr, value in extra.items %}

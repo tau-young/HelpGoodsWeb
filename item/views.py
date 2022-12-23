@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from . import forms, models
-from staff.models import Categlory
+from staff.models import Category
 import json
 
 # Create your views here.
@@ -15,7 +15,7 @@ def active_check(user):
 def index(request):
 	return render(request, 'Table.html',
 	{
-		'categlory': 'Item',
+		'category': 'Item',
 		'items': models.Base.objects.all(),
 		'user': models.User.objects.get(username=request.user.username)
 	})
@@ -24,7 +24,7 @@ def index(request):
 @user_passes_test(active_check)
 def detail(request):
 	item = models.Item.objects.get(id=request.GET['id'])
-	attrs = json.loads(Categlory.objects.get(name=item.categlory).attributes)
+	attrs = json.loads(Category.objects.get(name=item.category).attributes)
 	return render(request, 'Detail.html',
 	{
 		'item': item,
@@ -34,36 +34,36 @@ def detail(request):
 
 @login_required
 @user_passes_test(active_check)
-def new(request, categlory=''):
-	if not categlory:
-		return render(request, 'New.html', {'categlories': [cate.name for cate in Categlory.objects.all()]})
+def new(request, category=''):
+	if not category:
+		return render(request, 'New.html', {'categlories': [cate.name for cate in Category.objects.all()]})
 	user = models.User.objects.get(username=request.user.username)
-	attributes = {attr: '' for attr in json.loads(Categlory.objects.get(name=categlory).attributes)}
+	attributes = {attr: '' for attr in json.loads(Category.objects.get(name=category).attributes)}
 	if request.method == 'POST':
 		form = forms.NewItemForm(request.POST)
 		if form.is_valid():
-			categlory = form.cleaned_data['categlory']
+			category = form.cleaned_data['category']
 			name = form.cleaned_data['name']
 			description = form.cleaned_data['description']
 			address = form.cleaned_data['address']
 			phone = form.cleaned_data['phone']
 			email = form.cleaned_data['email']
-			item = models.Item.create(categlory, name, description, user.username, address, phone, email)
+			item = models.Item.create(category, name, description, user.username, address, phone, email)
 			attributes = {attr: request.POST[attr.replace(' ', '_')] for attr, _ in attributes.items()}
 			item.extra = json.dumps(attributes)
 			item.save()
 			return HttpResponseRedirect(reverse('item:index'))
 		return render(request, 'NewItem.html',
 		{
-			'categlory': categlory,
+			'category': category,
 			'form': form,
 			'attributes': attributes.items(),
 		})
 	return render(request, 'NewItem.html',
 	{
-		'categlory': categlory,
+		'category': category,
 		'form': forms.NewItemForm(initial={
-			'categlory': categlory,
+			'category': category,
 			'address': user.address,
 			'phone': user.phone,
 			'email': user.email,
@@ -94,7 +94,7 @@ def edit(request):
 		return render(request, 'EditItem.html',
 		{
 			'id': request.GET['id'],
-			'categlory': categlory,
+			'category': category,
 			'form': form,
 			'attributes': attributes.items(),
 			'item': item,
@@ -102,9 +102,9 @@ def edit(request):
 	return render(request, 'EditItem.html',
 	{
 		'id': request.GET['id'],
-		'categlory': categlory,
+		'category': category,
 		'form': forms.NewItemForm(initial={
-			'categlory': item.categlory,
+			'category': item.category,
 			'name': item.name,
 			'description': item.description,
 			'address': item.address,
@@ -128,14 +128,14 @@ def delete(request):
 
 @login_required
 @user_passes_test(active_check)
-def categlory(request, categlory=''):
-	if not categlory:
-		return render(request, 'Categlory.html', {'categlories': [cate.name for cate in Categlory.objects.all()]})
-	items = models.Item.objects.filter(categlory=categlory)
-	attrs = json.loads(Categlory.objects.get(name=categlory).attributes)
+def category(request, category=''):
+	if not category:
+		return render(request, 'Category.html', {'categlories': [cate.name for cate in Category.objects.all()]})
+	items = models.Item.objects.filter(category=category)
+	attrs = json.loads(Category.objects.get(name=category).attributes)
 	return render(request, 'Table.html',
 	{
-		'categlory': categlory,
+		'category': category,
 		'items': items,
 		'extra': {attr: [json.loads(item.extra)[attr] for item in items] for attr in attrs},
 		'user': models.User.objects.get(username=request.user.username),

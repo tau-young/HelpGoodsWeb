@@ -4,10 +4,10 @@
 		<title>New - HelpGoodsWeb</title>
 	</head>
 	<body>
-		<h1>Choose Categlory...</h1>
+		<h1>Choose Category...</h1>
 		<ul>
-			{% for categlory in categlories %}
-			<li><a href="{% url 'item:new' categlory %}">{{ categlory }}</a></li>
+			{% for category in categlories %}
+			<li><a href="{% url 'item:new' category %}">{{ category }}</a></li>
 			{% endfor %}
 		</ul>
 	</body>
