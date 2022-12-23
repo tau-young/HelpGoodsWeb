@@ -15,6 +15,7 @@ def active_check(user):
 def index(request):
 	return render(request, 'Table.html',
 	{
+		'categlory': 'Item',
 		'items': models.Base.objects.all(),
 		'user': models.User.objects.get(username=request.user.username)
 	})
@@ -37,7 +38,9 @@ def detail(request):
 
 @login_required
 @user_passes_test(active_check)
-def new(request):
+def new(request, categlory=''):
+	if not categlory:
+		return render(request, 'New.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
 	user = models.User.objects.get(username=request.user.username)
 	if request.method == 'POST':
 		form = forms.NewItemForm(request.POST)
@@ -50,15 +53,15 @@ def new(request):
 			email = form.cleaned_data['email']
 			getattr(models, categlory).create(categlory, name, description, user.username, address, phone, email).save()
 			return HttpResponseRedirect(reverse('item:index'))
-		return render(request, 'NewItem.html', {'form': form})
+		return render(request, 'NewItem.html', {'categlory': categlory, 'form': form})
 	form = forms.NewItemForm(initial=
 	{
-		'categlory': 'Item',
+		'categlory': categlory,
 		'address': user.address,
 		'phone': user.phone,
 		'email': user.email,
 	})
-	return render(request, 'NewItem.html', {'form': form})
+	return render(request, 'NewItem.html', {'categlory': categlory, 'form': form})
 
 @login_required
 @user_passes_test(active_check)
@@ -107,16 +110,14 @@ def delete(request):
 
 @login_required
 @user_passes_test(active_check)
-def categlories(request):
-	return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
-
-@login_required
-@user_passes_test(active_check)
-def categlory(request, cate):
-	items = getattr(models, cate).objects.all()
-	attrs = [attr for attr in [field.name for field in getattr(models, cate)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
+def categlory(request, categlory=''):
+	if not categlory:
+		return render(request, 'Categlory.html', {'categlories': [cate for cate, _ in inspect.getmembers(models, inspect.isclass) if not cate in ['Base', 'User']]})
+	items = getattr(models, categlory).objects.all()
+	attrs = [attr for attr in [field.name for field in getattr(models, categlory)._meta.get_fields()] if attr not in [field.name for field in models.Item._meta.get_fields()]]
 	return render(request, 'Table.html',
 	{
+		'categlory': categlory,
 		'items': items,
 		'extra': {attr: [getattr(item, attr) for item in items] for attr in attrs},
 		'user': models.User.objects.get(username=request.user.username)
