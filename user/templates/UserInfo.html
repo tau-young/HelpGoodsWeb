@@ -5,7 +5,9 @@
 	</head>
 	<body>
 		<h1>Welcome, {{ request.user.username }}</h1>
+		{% if is_active %}
 		<a href="{% url 'item:index' %}">View Item List</a>
+		{% endif %}
 		<div>Username: {{ user.username }}</div>
 		<div>Address: {{ user.address }}</div>
 		<div>Phone Number: <a href="tel://{{ user.phone }}">{{ user.phone }}</a></div>
