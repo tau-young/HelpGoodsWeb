@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
 			name='Base',
 			fields=[
 				('id', models.AutoField(primary_key=True, serialize=False)),
-				('categlory', models.CharField(default='Item', max_length=128)),
+				('category', models.CharField(default='Item', max_length=128)),
 				('name', models.CharField(max_length=128)),
 				('description', models.CharField(max_length=1024)),
 				('publisher', models.CharField(max_length=128)),

@@ -49,6 +49,8 @@
 					<td>
 						{% if user.username == item.publisher %}
 						<a href="{% url 'item:edit' %}?id={{ item.id }}">Edit</a>
+						{% endif %}
+						{% if user.username == item.publisher or staff %}
 						<a href="{% url 'item:delete' %}?id={{ item.id }}">Delete</a>
 						{% endif %}
 					</td>

@@ -16,8 +16,9 @@ def index(request):
 	return render(request, 'Table.html',
 	{
 		'category': 'Item',
-		'items': models.Base.objects.all(),
-		'user': models.User.objects.get(username=request.user.username)
+		'items': models.Item.objects.all(),
+		'user': models.User.objects.get(username=request.user.username),
+		'staff': request.user.is_staff,
 	})
 
 @login_required
@@ -120,8 +121,8 @@ def edit(request):
 def delete(request):
 	try:
 		user = models.User.objects.get(username=request.user.username)
-		item = models.Base.objects.get(id=request.GET['id'])
-		if user.username == item.publisher: item.delete()
+		item = models.Item.objects.get(id=request.GET['id'])
+		if user.username == item.publisher or request.user.is_staff: item.delete()
 		return HttpResponseRedirect(reverse('item:index'))
 	except:
 		return HttpResponseRedirect(reverse('item:index'))
@@ -139,4 +140,5 @@ def category(request, category=''):
 		'items': items,
 		'extra': {attr: [json.loads(item.extra)[attr] for item in items] for attr in attrs},
 		'user': models.User.objects.get(username=request.user.username),
+		'staff': request.user.is_staff,
 	})

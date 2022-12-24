@@ -11,7 +11,7 @@ import json
 def index(request):
 	inactive_users = []
 	for user in User.objects.filter(is_active=False):
-		inactive_users.append(User.objects.get(username=user.username))
+		inactive_users.append(models.User.objects.get(username=user.username))
 	return render(request, 'Index.html',
 	{
 		'inactive': inactive_users,
