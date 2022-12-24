@@ -60,3 +60,24 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 在浏览器中访问 <localhost:8000/user>。
+
+## 用例图
+
+![Use Case](UML/usecase.svg)
+
+## 顺序图
+
+![Sequence Register](UML/sequence-register.svg)
+![Sequence Login](UML/sequence-login.svg)
+![Sequence Logout](UML/sequence-logout.svg)
+![Sequence View User Info](UML/sequence-viewuserinfo.svg)
+![Sequence View Item List](UML/sequence-viewitemlist.svg)
+![Sequence View Item Info](UML/sequence-viewiteminfo.svg)
+![Sequence Post New Item](UML/sequence-postnewitem.svg)
+![Sequence Modify Item](UML/sequence-modifyitem.svg)
+![Sequence Grant User](UML/sequence-grantuser.svg)
+![Sequence Set New Item Type](UML/sequence-setnewitemtype.svg)
+
+## 类图
+
+![Class Graph](UML/class.svg)
